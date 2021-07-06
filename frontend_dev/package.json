@@ -1,0 +1,26 @@
+{
+  "name": "frontend_dev",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack-dev-server --watch-content-base --open",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "live-server": "^1.2.1",
+    "webpack": "^5.41.1",
+    "webpack-cli": "^3.3.8",
+    "webpack-dev-server": "^3.11.2"
+    
+  },
+  "dependencies": {
+    "axios": "^0.21.1",
+    "bootstrap": "^4.6.0",
+    "express": "^4.17.1",
+    "jquery": "^3.6.0",
+    "mongodb": "^3.6.9"
+  }
+}

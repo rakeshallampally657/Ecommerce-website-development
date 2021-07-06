@@ -1,0 +1,162 @@
+
+*{
+    box-sizing: border-box;
+}
+
+html{
+    font-size: 16px;
+}
+
+body{
+    height: 100vh;
+    font-size: 16px;
+    font-style: Arial;
+    margin: 0;
+}
+.container1{
+    display: grid;
+    height: 100%;
+   
+    margin: 0px;
+    grid-template-columns: 1fr;
+    grid-template-rows: 50px 1fr 30px;
+    grid-template-areas: "header"
+                          "main"
+                          "footer";
+    
+}
+
+
+
+
+footer{ 
+    color: white;
+    text-align: center;
+
+}
+
+.cards-deck{
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0;
+    justify-content: center;
+}
+ .cards {   
+    padding: 10px;
+    border:2px solid #e0e0e0;   
+    border-radius: 10px;
+    margin:10px; 
+    height: 350px;
+    width: 180px;
+    
+ }
+
+ .cards img{
+     max-height: 210px;
+     max-width: 150px;
+     margin: 3px;
+ } 
+
+
+
+ .cards-footer {
+    font-size: 20px;
+    background-color:lightgoldenrodyellow;
+    padding: 3px;
+    bottom: 5px;
+
+} 
+.cards-body {
+    
+    margin-top: 5px;
+    line-height: 22px;
+    border: 2px solid white;
+    
+} 
+.cards-body2 {
+  
+    margin-top: 5px;
+    font-size: 12px;
+    color:#808080;
+
+    background-color:lightgoldenrodyellow;
+    padding: 3px;
+}
+
+.cards-body a:hover{
+    color: #f08040 ;
+}
+.cards-body a{
+    color: black;
+}
+.checked {
+    color: orange;
+  }
+
+  #rak{
+      color: orange;
+  }  
+  #myBtn{
+      color: red;
+  }
+#image-id{
+     width: 300px;
+    
+  }
+ 
+  .back-to-result a:hover{
+      color: orange;
+      
+  }
+
+  .back-to-result a{
+    text-decoration: underline;
+
+  }
+
+  #unorderedlist{
+      list-style: none;
+      padding-left: 0;
+  }
+
+
+  #rating {
+    background-color: green;
+    color:white;
+    font-weight: bold;
+    padding: 4px;
+    border-radius: 5px;
+}
+.available{
+    color:green;
+}
+.unavailable{
+    color: tomato;
+}
+
+icon-shape {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.icon-sm {
+    width: 2rem;
+    height: 2rem;
+}
+
+#tablecart td{
+    border: none;
+}
+#placeOrdertab{
+    border: 2px solid lightgrey;
+    border-radius: 5px;
+
+}
+#tabledisplay{
+    border: 2px solid lightgrey;
+    border-radius: 5px;
+
+}
