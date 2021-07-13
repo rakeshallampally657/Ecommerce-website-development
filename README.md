@@ -15,7 +15,8 @@ HTML, CSS, Bootstrap, jQuery, NodeJS, MongoDB
 ![2](https://user-images.githubusercontent.com/79206625/125510390-2869c6be-d08a-464a-ae3b-db4122f4cbef.PNG)
 
 ## Cart screen
-![3](https://user-images.githubusercontent.com/79206625/125511047-5fb3021e-42fb-476b-8ca3-d241ab7d060e.PNG)
+![3](https://user-images.githubusercontent.com/79206625/125512285-1fb5ebdd-ebab-428a-b854-52716dcc2bdd.PNG)
+
 
 ## Sign-in screen with backend functionality
 ![sign in](https://user-images.githubusercontent.com/79206625/125511083-38bfa045-cc3a-416c-8193-3d88657f56fa.PNG)
