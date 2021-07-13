@@ -17,7 +17,10 @@ function  parseRequestUrl() {
 const routes={
   '/': "loadBody",
   '/product/:id': "loadProduct",
-  '/viewcart/:id': "cartItems"
+  '/viewcart/:id': "cartItems",
+  '/signin':      "signInPage",
+  '/register':    "register",
+  '/profile':     "profile"
 }
 
 
@@ -44,16 +47,70 @@ function router() {
   }
   else if(screen=="cartItems"){
 
-    
-    // cartItems();
     const request=parseRequestUrl();
     fetchCartData(request.id);
   
     
   }
+  else if(screen =="signInPage"){
+  
+
+   if(localStorage.getItem('userData')){
+    var userDataObject = JSON.parse(localStorage.getItem('userData'));
+    if(userDataObject.name){
+      
+      document.getElementsByClassName("maindiv")[0].getElementsByTagName('a')[1].innerHTML=userDataObject.name;
+      document.getElementsByClassName("maindiv")[0].getElementsByTagName('a')[1].href='/#/profile';
+
+    }
+
+   }
+   else{
+    document.getElementsByClassName("maindiv")[0].getElementsByTagName('a')[1].innerHTML="sign-in";
+    document.getElementsByClassName("maindiv")[0].getElementsByTagName('a')[1].href="/#/signin";
+
+    var main= document.getElementById("container-main");
+     main.innerHTML=signIn();
+   }
+    
+
+  }
+
+  else if(screen == "register"){
+    // var main= document.getElementById("container-main");
+    //  main.innerHTML=registerScreen();
+
+     if(localStorage.getItem('userData')){
+      var userDataObject = JSON.parse(localStorage.getItem('userData'));
+      if(userDataObject.name){
+        
+        document.getElementsByClassName("maindiv")[0].getElementsByTagName('a')[1].innerHTML=userDataObject.name;
+        document.getElementsByClassName("maindiv")[0].getElementsByTagName('a')[1].href='/#/profile';
+  
+      }
+  
+     }
+     else{
+      document.getElementsByClassName("maindiv")[0].getElementsByTagName('a')[1].innerHTML="sign-in";
+      document.getElementsByClassName("maindiv")[0].getElementsByTagName('a')[1].href="/#/signin";
+  
+      var main= document.getElementById("container-main");
+       main.innerHTML=registerScreen();
+     }
+
+  }
+
+  else if( screen== "profile"){
+
+    var main= document.getElementById("container-main");
+       main.innerHTML=profileScreen();
+  }
+
+  //****end else */
   else{
     var main= document.getElementById("container-main");
    main.innerHTML=errorScreen404();
+   
     
       
     }
@@ -74,6 +131,24 @@ function fetchInfo() {
 }
 
 function bodyload(products){
+  
+  if(localStorage.getItem('userData')){
+    var userDataObject = JSON.parse(localStorage.getItem('userData'));
+    if(userDataObject.name){
+      
+      document.getElementsByClassName("maindiv")[0].getElementsByTagName('a')[1].innerHTML=userDataObject.name;
+      document.getElementsByClassName("maindiv")[0].getElementsByTagName('a')[1].href='/#/profile';
+
+    }
+    
+
+   }
+   else{
+    document.getElementsByClassName("maindiv")[0].getElementsByTagName('a')[1].innerHTML="sign-in";
+    document.getElementsByClassName("maindiv")[0].getElementsByTagName('a')[1].href="/#/signin";
+   }
+
+
   var cardsDeck=document.getElementById("cardDeck");
             
   
@@ -406,8 +481,332 @@ function renderCart() {
   
 }
 
+//************************************************sign-in screen************************* */
+function logSubmit(event) {
+  
+  event.preventDefault();
+  const userName = document.getElementById("username").value;
+  const password =  document.getElementById("password").value;
+  const data = {
+     email: userName,
+     password:password
+  }
+  fetch('http://127.0.0.1:500/user/signin', {
+  method: 'POST', // or 'PUT'
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify(data),
+})
+  .then(response => response.json())
+  .then(data => { login(data)})
+  .catch((error) => {
+  console.error('Error:', error);
+});
 
 
+}
+
+function login(data){
+  if(data.message){
+    alert(data.message);
+  }
+  else{
+    console.log('Success:', data);
+    let userData = Object.assign({}, data);
+    userData.isAdmin= false;
+    localStorage.setItem('userData', JSON.stringify(userData));
+
+
+    location.href='/';
+    var userDataObject = localStorage.getItem('userData');
+
+   console.log('retrievedObject: ', JSON.parse(userDataObject));   
+
+
+
+  }
+  
+}
+function signIn(){
+  return(`
+  <div class="container">
+	<div class="d-flex justify-content-center h-100">
+		<div class="card bg-primary">
+			<div class="card-header">
+				<h3>Sign In</h3>
+				
+			</div>
+			<div class="card-body mt-3">
+				<form onsubmit="logSubmit(event)">
+					<div class="input-group form-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text"><i class="fas fa-user"></i></span>
+						</div>
+						<input type="text" class="form-control" placeholder="useremail" id="username">
+						
+					</div>
+					<div class="input-group form-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text"><i class="fas fa-key"></i></span>
+						</div>
+						<input type="password" class="form-control" placeholder="password" id="password" >
+					</div>
+				
+					<div class="form-group">
+						
+        
+          <input type="submit" value="Login" class="btn  btn-block btn-success mt-5">
+     
+					</div>
+				</form>
+			</div>
+			<div class="card-footer">
+				<div class="d-flex justify-content-center links">
+					Don't have an account?<a href="/#/register">SignUp</a>
+				</div>
+				<div class="d-flex justify-content-center links2">
+					<a href="#">Forgot your password?</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+  
+  `)
+}
+
+//**********************************RegisterScreen************************************************ */
+
+
+function registerSubmit(event) {
+  
+  event.preventDefault();
+  const userName = document.getElementById("userregistername").value;
+  const password =  document.getElementById("passwordregistration").value;
+  const email =  document.getElementById("userregisteremail").value;
+  const data = {
+     email: email,
+     name: userName,
+     password:password
+  }
+  fetch('http://127.0.0.1:500/user/register', {
+  method: 'POST', // or 'PUT'
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify(data),
+})
+  .then(response => response.json())
+  .then(data => { registration(data)})
+  .catch((error) => {
+  console.error('Error:', error);
+});
+
+
+}
+
+function registration(data){
+  if(data.message){
+    alert(data.message);
+  }
+  else{
+    console.log('Success:', data);
+    let userData = Object.assign({}, data);
+    userData.isAdmin= false;
+    localStorage.setItem('userData', JSON.stringify(userData));
+
+
+    location.href='/';
+    var userDataObject = localStorage.getItem('userData');
+
+   console.log('retrievedObject: ', JSON.parse(userDataObject));   
+
+
+
+  }
+  
+}
+
+
+function registerScreen(){
+  return(`
+  <div class="container">
+	<div class="d-flex justify-content-center h-100">
+		<div class="card bg-primary">
+			<div class="card-header">
+				<h3>Create Account</h3>
+				
+			</div>
+			<div class="card-body">
+				<form onsubmit="registerSubmit(event)">
+					<div class="input-group form-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text"><i class="fas fa-user"></i></span>
+						</div>
+						<input type="text" class="form-control" placeholder="choose name" value= id="userregistername">
+						
+					</div>
+
+          <div class="input-group form-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text"><i class="fas fa-at"></i></span>
+						</div>
+						<input type="text" class="form-control" placeholder="choose email" id="userregisteremail">
+						
+					</div>
+
+					<div class="input-group form-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text"><i class="fas fa-key"></i></span>
+						</div>
+						<input type="password" class="form-control" placeholder="password" id="passwordregistration" >
+					</div>
+
+
+          <div class="input-group form-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text"><i class="fas fa-key"></i></span>
+						</div>
+						<input type="password" class="form-control" placeholder="re-enter password" id="repasswordregistration" >
+					</div>
+
+
+					
+					<div class="form-group">
+						
+        
+          <input type="submit" value="Register" class="btn  btn-block btn-success mt-3">
+     
+					</div>
+				</form>
+			</div>
+			<div class="card-footer">
+				<div class="d-flex justify-content-center links">
+					Already have an account?<a href="/#/signin">Login</a>
+				</div>
+			
+			</div>
+		</div>
+	</div>
+</div>
+  
+  
+  `)
+}
+
+//*********************************profile screen******************************************************** */
+
+
+
+
+function profileSubmit(event) {
+  
+  event.preventDefault();
+  const userName = document.getElementById("username").value;
+  const password =  document.getElementById("password").value;
+  const email =  document.getElementById("useremail").value;
+  const data = {
+     email: email,
+     name: userName,
+     password:password
+  }
+  if(localStorage.getItem('userData')){
+    var userDataObject = JSON.parse(localStorage.getItem('userData'));
+  }
+  fetch(`http://127.0.0.1:500/user/${userDataObject._id}`, {
+  method: 'PUT', // or 'PUT'
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify(data),
+})
+  .then(response => response.json())
+  .then(data => { profileUpdate(data)})
+  .catch((error) => {
+  console.error('Error:', error);
+});
+
+
+}
+
+function profileUpdate(data){
+  if(data.message){
+    alert(data.message);
+  }
+  else{
+    console.log('Success:', data);
+    let userData = Object.assign({}, data);
+    userData.isAdmin= false;
+    localStorage.setItem('userData', JSON.stringify(userData));
+
+
+    location.href='/';
+    var userDataObject = localStorage.getItem('userData');
+
+   console.log('retrievedObject: ', JSON.parse(userDataObject));   
+
+
+
+  }
+  
+}
+
+
+function profileScreen(){
+  if(localStorage.getItem('userData')){
+    var userDataObject = JSON.parse(localStorage.getItem('userData'));
+  }
+  return(`
+  <div class="container">
+	<div class="d-flex justify-content-center h-100">
+		<div class="card bg-primary">
+			<div class="card-header">
+				<h3>My Profile</h3>
+				
+			</div>
+			<div class="card-body mt-3">
+				<form onsubmit="profileSubmit(event)">
+         
+        <div class="input-group form-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text"><i class="fas fa-user"></i></span>
+						</div>
+						<input type="text" class="form-control" id="username" value="${userDataObject.name}">
+						
+					</div>
+
+					<div class="input-group form-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text"><i class="fas fa-user"></i></span>
+						</div>
+						<input type="text" class="form-control"  id="useremail"  value="${userDataObject.email}" >
+						
+					</div>
+					<div class="input-group form-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text"><i class="fas fa-key"></i></span>
+						</div>
+						<input type="password" class="form-control"  id="password" >
+					</div>
+				
+					<div class="form-group">
+						
+        
+          <input type="submit" value="Update" class="btn  btn-block btn-warning mt-3">
+     
+					</div>
+				</form>
+			</div>
+			<div class="card-footer">
+			
+			</div>
+		</div>
+	</div>
+</div>
+  
+  `)
+}
 //*************************************Errorscreen***************************************************************** */
 function errorScreen404() {
   return(`
