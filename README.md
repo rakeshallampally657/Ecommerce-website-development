@@ -15,7 +15,7 @@
 ## User Logged-in screen
 ![loogedin screen](https://user-images.githubusercontent.com/79206625/125511135-295d026a-f072-4212-a82a-e78121cdccd4.PNG)
 
-## Update user Profile screen with backend functionality
+## Update user profile screen with backend functionality
 ![update profile screen](https://user-images.githubusercontent.com/79206625/125511267-667d97e9-dcff-407c-9144-9f311f0617ea.PNG)
 
 
